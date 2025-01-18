@@ -4,7 +4,7 @@ mongoose.set('strictQuery', true);
 
 exports.dbConnection = async () => {
     try {
-        const connection = await mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017/Maktpat')
+        const connection = await mongoose.connect('mongodb://localhost:27017/Maktpat')
 
         console.log('db connection done !');
         return connection

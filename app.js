@@ -17,9 +17,12 @@ app.use(express.json());
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 const categRoutes = require("./routes/categ");
+const bookRoutes = require("./routes/book");
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/categ", categRoutes);
+app.use("/book", bookRoutes);
+
 //db onnection
 dbConnection();
 const PORT = process.env.PORT || 3000;

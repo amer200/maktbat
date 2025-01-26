@@ -20,7 +20,7 @@ exports.addPending = async (req, res) => {
                     msg: `not enough stock for ${book.name} the avalibe = ${book.amount}`
                 })
             }
-            totalprice = totalprice + book.price;
+            totalprice = totalprice + (book.price * item.amount);
         }
         const newOreder = new order({
             books: books,

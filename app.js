@@ -18,10 +18,12 @@ const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 const categRoutes = require("./routes/categ");
 const bookRoutes = require("./routes/book");
+const orderRoutes = require("./routes/order");
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/categ", categRoutes);
 app.use("/book", bookRoutes);
+app.use("/order", orderRoutes);
 
 //db onnection
 dbConnection();

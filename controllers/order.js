@@ -1,5 +1,6 @@
 const order = require("../models/order");
-const Book = require("../models/book")
+const Book = require("../models/book");
+const User = require("../models/user");
 exports.addPending = async (req, res) => {
     try {
         const { books, phone, address } = req.body;
@@ -83,3 +84,35 @@ exports.changeOrderToShipped = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+exports.changeOrderToDelevered = async (req, res) => {
+    try {
+        const orderId = req.body.orderId;
+        const userId = req.user.user.id;
+        const o = await order.findById(orderId);
+        const u = await User.findById(userId);
+        if (!o) {
+            return res.status(404).json({
+                msg: "order not found!"
+            })
+        }
+        if (o.user.toString() !== userId) {
+            return res.status(400).json({
+                msg: "order not found!"
+            })
+        }
+        if (o.status !== "shipped") {
+            return res.status(400).json({
+                msg: "order status must be shipped"
+            })
+        }
+        o.status = "deliverd";
+        await o.save()
+        return res.status(200).json({
+            msg: "ok",
+            data: o
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+}

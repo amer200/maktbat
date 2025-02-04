@@ -7,4 +7,5 @@ const isUser = require("../middlewares/isUser");
 routes.post("/add-new", isUser.isAuth, orederControllers.addPending);
 routes.put("/ship", isUser.isAuth, orederControllers.changeOrderToShipped);
 routes.put("/deliver", isUser.isAuth, orederControllers.changeOrderToDelevered);
+routes.put("/cancell", isUser.isAuth, orederControllers.changeOrderToCancelled);
 module.exports = routes

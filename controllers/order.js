@@ -89,7 +89,6 @@ exports.changeOrderToDelevered = async (req, res) => {
         const orderId = req.body.orderId;
         const userId = req.user.user.id;
         const o = await order.findById(orderId);
-        const u = await User.findById(userId);
         if (!o) {
             return res.status(404).json({
                 msg: "order not found!"
@@ -112,6 +111,40 @@ exports.changeOrderToDelevered = async (req, res) => {
             data: o
         })
     } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+}
+exports.changeOrderToCancelled = async (req, res) => {
+    try {
+        const orderId = req.body.orderId;
+        const userId = req.user.user.id;
+        const o = await order.findById(orderId);
+        if (!o) {
+            return res.status(404).json({
+                msg: "order not found!"
+            })
+        }
+        if (o.user.toString() !== userId) {
+            return res.status(400).json({
+                msg: "order not found!"
+            })
+        }
+        if (o.status == "shipped" || o.status == "deliverd") {
+            o.books.forEach(async b => {
+                let book = await Book.findById(b.bookid);
+                book.amount = book.amount + b.amount
+                await book.save();
+            })
+        }
+        o.status = "cancelled";
+        await o.save()
+        return res.status(200).json({
+            msg: "ok",
+            data: o
+        })
+    }
+    catch (error) {
         console.error(error);
         res.status(500).json({ error: error.message });
     }
